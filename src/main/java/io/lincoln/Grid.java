@@ -1,6 +1,7 @@
 package io.lincoln;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Grid {
 
@@ -9,7 +10,7 @@ public class Grid {
     private List<Coordinate> coordinates = new ArrayList<>();
 
     private enum Direction {
-        HORIZONAL,
+        HORIZONTAL,
         VERTICAL,
         DIAGONAL,
         HORIZONTAL_INVERSE,
@@ -53,7 +54,7 @@ public class Grid {
                 Direction selectedDirection = getDirectionForFit(word, coordinate);
                 if (selectedDirection != null) {
                     switch (selectedDirection) {
-                        case HORIZONAL:
+                        case HORIZONTAL:
                             for (char c : word.toCharArray()) {
                                 contents[x][y++] = c;
                             }
@@ -68,11 +69,27 @@ public class Grid {
                                 contents[x++][y++] = c;
                             }
                             break;
+                        case HORIZONTAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x][y--] = c;
+                            }
+                            break;
+                        case VERTICAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x--][y] = c;
+                            }
+                            break;
+                        case DIAGONAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x--][y--] = c;
+                            }
+                            break;
                     }
                     break;
                 }
             }
         }
+        randomfillGrid();
     }
 
     // method to display grid
@@ -82,6 +99,19 @@ public class Grid {
                 System.out.print(contents[i][j] + " ");
             }
             System.out.println("");
+        }
+    }
+
+    // populate the rest of the grid with random letters
+    private void randomfillGrid() {
+        String allCapLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                if (contents[i][j] == '_') {
+                    int randomIndex = ThreadLocalRandom.current().nextInt(0, allCapLetters.length());
+                    contents[i][j] = allCapLetters.charAt(randomIndex);
+                }
+            }
         }
     }
 
@@ -102,7 +132,7 @@ public class Grid {
     private boolean doesFit(String word, Coordinate coordinate, Direction direction) {
         int wordLength = word.length();
         switch (direction) {
-            case HORIZONAL:
+            case HORIZONTAL:
                 if (coordinate.y + wordLength > gridSize)
                     return false;
                 for (int i = 0; i < wordLength; i++) {
@@ -123,6 +153,31 @@ public class Grid {
                     return false;
                 for (int i = 0; i < wordLength; i++) {
                     if (contents[coordinate.x + i][coordinate.y + i] != '_')
+                        return false;
+                }
+                break;
+
+            case HORIZONTAL_INVERSE:
+                if (coordinate.y < wordLength)
+                    return false;
+                for (int i = 0; i < wordLength; i++) {
+                    if (contents[coordinate.x][coordinate.y - i] != '_')
+                        return false;
+                }
+                break;
+            case VERTICAL_INVERSE:
+                if (coordinate.x < wordLength)
+                    return false;
+                for (int i = 0; i < wordLength; i++) {
+                    if (contents[coordinate.x - i][coordinate.y] != '_')
+                        return false;
+                }
+                break;
+            case DIAGONAL_INVERSE:
+                if (coordinate.y < wordLength || coordinate.x < wordLength)
+                    return false;
+                for (int i = 0; i < wordLength; i++) {
+                    if (contents[coordinate.x - i][coordinate.y - i] != '_')
                         return false;
                 }
                 break;

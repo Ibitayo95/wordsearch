@@ -11,7 +11,10 @@ public class Grid {
     private enum Direction {
         HORIZONAL,
         VERTICAL,
-        DIAGONAL
+        DIAGONAL,
+        HORIZONTAL_INVERSE,
+        VERTICAL_INVERSE,
+        DIAGONAL_INVERSE
     }
 
     // inner class for coordinates

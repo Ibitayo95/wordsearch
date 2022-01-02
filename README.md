@@ -6,3 +6,7 @@ step 2 - set up API using java springboot.
     - Created a wordsearch controller class
     
 step 3 - tested the API (GET method) using Postman
+
+step 4 - deployed API on heroku
+
+step 5 (in progress) - create user interface on client side using html/css/javascript

@@ -27,7 +27,7 @@ public class WordGridService {
         }
     }
 
-    // method that fills the grid with word input
+    // method that creates AND fills the grid with word input
     public char[][] generateGrid(int gridSize, List<String> words) {
         List<Coordinate> coordinates = new ArrayList<>();
 

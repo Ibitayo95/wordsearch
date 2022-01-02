@@ -1,4 +1,5 @@
 package io.lincoln.controllers;
+
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,17 @@ public class WordsearchController {
 
     @Autowired
     WordGridService wordGridService;
-   
+
     @GetMapping("/wordgrid")
     @ResponseBody
     public String createWordGrid(@RequestParam int gridSize, @RequestParam String wordList) {
 
         List<String> words = Arrays.asList(wordList.split(","));
         char[][] grid = wordGridService.generateGrid(gridSize, words);
+        // this method returns a string so add items generated from grid to a new string
+        // called gridToString
         String gridToString = "";
-       
+
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 gridToString += grid[i][j] + " ";
@@ -33,4 +36,3 @@ public class WordsearchController {
     }
 
 }
-

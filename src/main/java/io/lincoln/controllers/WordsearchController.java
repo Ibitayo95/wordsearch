@@ -32,6 +32,7 @@ public class WordsearchController {
             }
             gridToString += "\r\n";
         }
+        System.out.println(gridToString);
         return gridToString;
     }
 

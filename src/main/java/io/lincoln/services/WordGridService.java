@@ -3,8 +3,8 @@ package io.lincoln.services;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 import org.springframework.stereotype.Service;
+
 @Service
 public class WordGridService {
 
@@ -40,9 +40,9 @@ public class WordGridService {
             }
         }
         // randomise coordinates of grid
-        Collections.shuffle(coordinates);
-        for (String word : words) {
 
+        for (String word : words) {
+            Collections.shuffle(coordinates);
             for (Coordinate coordinate : coordinates) {
                 int x = coordinate.x;
                 int y = coordinate.y;
@@ -100,7 +100,6 @@ public class WordGridService {
         }
     }
 
-
     // populate the rest of the grid with random letters
     private void randomfillGrid(char[][] contents) {
         int gridSize = contents[0].length;
@@ -108,7 +107,8 @@ public class WordGridService {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 if (contents[i][j] == '_') {
-                    int randomIndex = ThreadLocalRandom.current().nextInt(0, allCapLetters.length());
+                    int randomIndex = ThreadLocalRandom.current().nextInt(0,
+                            allCapLetters.length());
                     contents[i][j] = allCapLetters.charAt(randomIndex);
                 }
             }
@@ -136,16 +136,19 @@ public class WordGridService {
             case HORIZONTAL:
                 if (coordinate.y + wordLength > gridSize)
                     return false;
-                for (int i = 0; i < wordLength; i++) {
-                    if (contents[coordinate.x][coordinate.y + i] != '_')
+                for (int i = 0; i < wordLength;) {
+                    char letter = contents[coordinate.x][coordinate.y + i];
+                    if (letter != '_' && letter != word.charAt(i))
                         return false;
+                    return false;
                 }
                 break;
             case VERTICAL:
                 if (coordinate.x + wordLength > gridSize)
                     return false;
                 for (int i = 0; i < wordLength; i++) {
-                    if (contents[coordinate.x + i][coordinate.y] != '_')
+                    char letter = contents[coordinate.x + i][coordinate.y];
+                    if (letter != '_' && letter != word.charAt(i))
                         return false;
                 }
                 break;
@@ -153,7 +156,8 @@ public class WordGridService {
                 if (coordinate.y + wordLength > gridSize || coordinate.x + wordLength > gridSize)
                     return false;
                 for (int i = 0; i < wordLength; i++) {
-                    if (contents[coordinate.x + i][coordinate.y + i] != '_')
+                    char letter = contents[coordinate.x + i][coordinate.y + i];
+                    if (letter != '_' && letter != word.charAt(i))
                         return false;
                 }
                 break;
@@ -162,7 +166,8 @@ public class WordGridService {
                 if (coordinate.y < wordLength)
                     return false;
                 for (int i = 0; i < wordLength; i++) {
-                    if (contents[coordinate.x][coordinate.y - i] != '_')
+                    char letter = contents[coordinate.x][coordinate.y - i];
+                    if (letter != '_' && letter != word.charAt(i))
                         return false;
                 }
                 break;
@@ -170,7 +175,8 @@ public class WordGridService {
                 if (coordinate.x < wordLength)
                     return false;
                 for (int i = 0; i < wordLength; i++) {
-                    if (contents[coordinate.x - i][coordinate.y] != '_')
+                    char letter = contents[coordinate.x - i][coordinate.y];
+                    if (letter != '_' && letter != word.charAt(i))
                         return false;
                 }
                 break;
@@ -178,7 +184,8 @@ public class WordGridService {
                 if (coordinate.y < wordLength || coordinate.x < wordLength)
                     return false;
                 for (int i = 0; i < wordLength; i++) {
-                    if (contents[coordinate.x - i][coordinate.y - i] != '_')
+                    char letter = contents[coordinate.x - i][coordinate.y - i];
+                    if (letter != '_' && letter != word.charAt(i))
                         return false;
                 }
                 break;
